@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Именные наклейки</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="eyebrow">Именные наклейки для детей</p>
+      <h1>Создайте наклейку за пару минут</h1>
+      <p class="hero__text">Выберите вид, имя, картинку и фон — сразу увидите результат.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="products" aria-labelledby="products-title">
+      <div class="section-heading">
+        <p class="step">Шаг 1</p>
+        <h2 id="products-title">Куда нужны наклейки?</h2>
+      </div>
+      <div class="product-grid">
+        <article class="product-card product-card--termo">
+          <img src="dtf.jpeg" alt="Пример термо-наклеек для одежды">
+          <div class="product-card__body">
+            <h3>Для одежды</h3>
+            <p>Термо-наклейки для одежды и тканей — с картинкой и фоном.</p>
+            <ul>
+              <li>20 шт — 300 сом</li>
+              <li>40 шт — 400 сом</li>
+              <li>Выберите картинку и фон</li>
+              <li>Изготовление: 2–4 рабочих дня</li>
+            </ul>
+            <button class="button button--primary" type="button" data-start-type="termo">Выбрать для одежды</button>
+          </div>
+        </article>
+        <article class="product-card product-card--stationery">
+          <img src="vinyl.jpeg" alt="Пример наклеек для канцелярии">
+          <div class="product-card__body">
+            <h3>Для канцелярии</h3>
+            <p>Для тетрадей, ручек, папок и других вещей.</p>
+            <ul>
+              <li>78 наклеек на листе</li>
+              <li>1 лист — 400 сом</li>
+              <li>Картинка и фон на выбор</li>
+            </ul>
+            <button class="button button--primary" type="button" data-start-type="stationery">Выбрать для канцелярии</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="order-section" id="orderSection" hidden aria-labelledby="order-title">
+      <div class="section-heading">
+        <p class="step">Шаг 2</p>
+        <h2 id="order-title">Настройте наклейки</h2>
+        <p>Один блок — один лист наклеек с одним именем.</p>
+      </div>
+
+      <div id="formsContainer"></div>
+
+      <aside class="price-summary" aria-live="polite">
+        <span>Стоимость заказа</span>
+        <strong id="totalPrice">0 сом</strong>
+        <small id="totalInfo">Выберите вид наклеек, чтобы увидеть стоимость.</small>
+      </aside>
+
+      <div class="order-actions">
+        <button class="button button--secondary" id="addForm" type="button">+ Добавить ещё один лист</button>
+        <button class="button button--primary" id="sendOrder" type="button">Заказать в WhatsApp</button>
+      </div>
+    </section>
+  </main>
+
+  <template id="formTemplate">
+    <article class="order-form">
+      <div class="form-heading">
+        <span class="sheet-label">Лист наклеек</span>
+        <button class="remove-form" type="button" aria-label="Удалить этот лист" hidden>Удалить</button>
+      </div>
+
+      <div class="form-layout">
+        <div class="form-controls">
+          <fieldset>
+            <legend><span>1</span> Выберите вид</legend>
+            <div class="choice-grid choice-grid--types">
+              <button type="button" class="choice-card type-choice" data-type="termo">
+                <strong>Для одежды</strong><small>Термо-наклейка</small>
+              </button>
+              <button type="button" class="choice-card type-choice" data-type="stationery">
+                <strong>Для канцелярии</strong><small>С фоном и картинкой</small>
+              </button>
+            </div>
+          </fieldset>
+
+          <label class="field-label"><span>2</span> Имя ребёнка
+            <input type="text" class="child-name" placeholder="Например, Илибек Асанбек уулу 2 класс" autocomplete="name">
+          </label>
+
+          <fieldset class="quantity-field" hidden>
+            <legend><span>3</span> Количество</legend>
+            <div class="choice-grid choice-grid--quantity">
+              <button type="button" class="choice-card qty-choice" data-qty="20"><strong>20 шт</strong><small>300 сом</small></button>
+              <button type="button" class="choice-card qty-choice" data-qty="40"><strong>40 шт</strong><small>400 сом</small></button>
+            </div>
+          </fieldset>
+
+          <fieldset class="art-field">
+            <legend><span class="art-step">3</span> Выберите картинку</legend>
+            <button type="button" class="without-image">Только имя, без картинки</button>
+            <div class="asset-gallery image-gallery" aria-label="Выбор картинки"></div>
+          </fieldset>
+
+          <fieldset class="background-field" hidden>
+            <legend><span class="background-step">4</span> Выберите фон</legend>
+            <button type="button" class="without-background">Белый фон</button>
+            <div class="asset-gallery background-gallery" aria-label="Выбор фона"></div>
+          </fieldset>
+
+          <fieldset class="color-field">
+            <legend><span class="color-step">4</span> Цвет имени</legend>
+            <div class="color-palette" aria-label="Выбор цвета текста"></div>
+          </fieldset>
+        </div>
+
+        <div class="preview-panel">
+          <p>Предпросмотр</p>
+          <div class="preview preview--termo">
+            <canvas class="preview-canvas" aria-label="Предпросмотр одной наклейки"></canvas>
+          </div>
+          <small class="preview-note">Так будет выглядеть одна наклейка. Печатный лист здесь не показывается.</small>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    const IMAGES = Array.from({ length: 25 }, (_, index) => ({
+      id: index + 1,
+      src: `images/img${index + 1}.png`
+    }));
+    const BACKGROUNDS = Array.from({ length: 8 }, (_, index) => ({
+      id: index + 1,
+      src: `images/bg${index + 1}.png`
+    }));
+    const COLORS = {
+      termo: ["#1f2937", "#dc2626", "#2563eb", "#15803d", "#c2410c", "#db2777", "#713f12"],
+      stationery: ["#1d4ed8", "#db2777", "#6d28d9", "#0f766e", "#b45309", "#1f2937"]
+    };
+    const PRICES = { termo: { 20: 300, 40: 400 }, stationery: 400 };
+    const TYPE_LABELS = { termo: "Термо-наклейки для одежды", stationery: "Наклейки для канцелярии" };
+
+    const formsContainer = document.getElementById("formsContainer");
+    const orderSection = document.getElementById("orderSection");
+
+    function createAssetButton(asset, kind) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `asset-button asset-button--${kind}`;
+      button.dataset.id = asset.id;
+      button.dataset.src = asset.src;
+      button.setAttribute("aria-label", `${kind === "image" ? "Картинка" : "Фон"} ${asset.id}`);
+      const img = document.createElement("img");
+      img.src = asset.src;
+      img.alt = "";
+      button.appendChild(img);
+      return button;
+    }
+
+    function renderAssets(form) {
+      const imageGallery = form.querySelector(".image-gallery");
+      const backgroundGallery = form.querySelector(".background-gallery");
+      IMAGES.forEach(asset => imageGallery.appendChild(createAssetButton(asset, "image")));
+      BACKGROUNDS.forEach(asset => backgroundGallery.appendChild(createAssetButton(asset, "background")));
+    }
+
+    function renderColors(form, type, keepColor) {
+      const palette = form.querySelector(".color-palette");
+      const current = keepColor || palette.querySelector(".color-option.is-selected")?.dataset.color;
+      palette.replaceChildren();
+      COLORS[type].forEach((color, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "color-option";
+        button.dataset.color = color;
+        button.style.backgroundColor = color;
+        button.setAttribute("aria-label", `Цвет ${index + 1}`);
+        if (color === current || (!current && index === 0)) button.classList.add("is-selected");
+        palette.appendChild(button);
+      });
+    }
+
+    function selected(form, selector) {
+      return form.querySelector(`${selector}.is-selected`);
+    }
+
+    function syncPreview(form) {
+      const type = form.dataset.type || "termo";
+      const preview = form.querySelector(".preview");
+      const name = form.querySelector(".child-name").value.trim() || "Имя";
+      const image = selected(form, ".asset-button--image");
+      const background = selected(form, ".asset-button--background");
+      const color = selected(form, ".color-option")?.dataset.color || COLORS[type][0];
+
+      preview.className = `preview preview--${type}`;
+      drawStickerPreview(form, { type, name, color, imageSrc: image?.dataset.src || "", backgroundSrc: background?.dataset.src || "" });
+    }
+
+    function loadPreviewImage(source) {
+      if (!source) return Promise.resolve(null);
+      return new Promise(resolve => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => resolve(null);
+        image.src = source;
+      });
+    }
+
+    function bestTwoLineSplit(context, text) {
+      const words = text.split(/\s+/).filter(Boolean);
+      if (words.length < 2) return null;
+      let bestLines = null;
+      let bestWidth = Infinity;
+      for (let index = 1; index < words.length; index += 1) {
+        const first = words.slice(0, index).join(" ");
+        const second = words.slice(index).join(" ");
+        const widest = Math.max(context.measureText(first).width, context.measureText(second).width);
+        if (widest < bestWidth) {
+          bestWidth = widest;
+          bestLines = [first, second];
+        }
+      }
+      return bestLines ? { lines: bestLines, widest: bestWidth } : null;
+    }
+
+    function labelPath(context, width, height, radius) {
+      context.beginPath();
+      context.roundRect(0, 0, width, height, radius);
+    }
+
+    // Канвасная версия алгоритмов termonew.py и kancnew.py для ОДНОЙ наклейки.
+    // Здесь нет CSS-выравнивания: используются те же пропорции, позиции и обводка,
+    // что и в файлах, формирующих PDF для печати.
+    async function drawStickerPreview(form, state) {
+      const preview = form.querySelector(".preview");
+      const canvas = form.querySelector(".preview-canvas");
+      const renderKey = JSON.stringify(state);
+      preview.dataset.renderKey = renderKey;
+      const [background, illustration] = await Promise.all([loadPreviewImage(state.backgroundSrc), loadPreviewImage(state.imageSrc)]);
+      if (preview.dataset.renderKey !== renderKey) return;
+
+      const ratio = state.type === "termo" ? 4 : 69.831 / 16.488;
+      const rect = canvas.getBoundingClientRect();
+      const cssWidth = Math.max(1, Math.round(rect.width));
+      const cssHeight = Math.max(1, Math.round(cssWidth / ratio));
+      const pixelRatio = window.devicePixelRatio || 1;
+      canvas.width = Math.round(cssWidth * pixelRatio);
+      canvas.height = Math.round(cssHeight * pixelRatio);
+      const context = canvas.getContext("2d");
+      const height = 100;
+      const width = height * ratio;
+      context.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
+      context.clearRect(0, 0, width, height);
+
+      const isTermo = state.type === "termo";
+      const radius = isTermo ? height / 2 : height * 0.30;
+      context.save();
+      labelPath(context, width, height, radius);
+      context.clip();
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, width, height);
+      if (background) context.drawImage(background, 0, 0, width, height);
+      context.restore();
+
+      const fontFamily = '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif';
+      const fontWeight = "800";
+      let textCenterX = width / 2;
+      let textMaxWidth;
+      let textMaxHeight;
+      let fontSizeMax;
+      let lineHeightFactor;
+      let strokeOffset;
+
+      if (isTermo) {
+        const iconPadding = height * 0.15;
+        const iconNudgeRight = height * 0.15;
+        const rightMargin = height * 0.10;
+        textMaxHeight = height - 2 * iconPadding;
+        fontSizeMax = textMaxHeight;
+        lineHeightFactor = 1;
+        strokeOffset = height * 0.10;
+        if (illustration) {
+          const maxImageWidth = width * 0.30;
+          const scale = Math.min(maxImageWidth / illustration.naturalWidth, textMaxHeight / illustration.naturalHeight, 1);
+          const drawWidth = illustration.naturalWidth * scale;
+          const drawHeight = illustration.naturalHeight * scale;
+          const imageX = iconPadding + iconNudgeRight;
+          const imageY = (height - drawHeight) / 2;
+          context.drawImage(illustration, imageX, imageY, drawWidth, drawHeight);
+          textMaxWidth = width - (imageX + drawWidth + height * 0.10) - rightMargin;
+          textCenterX = imageX + drawWidth + height * 0.10 + textMaxWidth / 2;
+        } else {
+          textMaxWidth = width - (iconPadding + rightMargin);
+        }
+      } else {
+        const paddingX = height * (3.5 / 16.488);
+        const paddingY = height * (2 / 16.488);
+        const imageGap = height * (0.4 / 16.488);
+        textMaxHeight = height - 2 * paddingY;
+        fontSizeMax = height * (14 / (16.488 * 2.83465));
+        lineHeightFactor = 1.02;
+        strokeOffset = height * (0.8 / 16.488);
+        let imageBoxWidth = 0;
+        if (illustration) {
+          const box = Math.min(textMaxHeight, width * 0.35);
+          const scale = Math.min(box / illustration.naturalWidth, box / illustration.naturalHeight);
+          const drawWidth = illustration.naturalWidth * scale;
+          const drawHeight = illustration.naturalHeight * scale;
+          const imageX = paddingX + (box - drawWidth) / 2;
+          const imageY = (height - drawHeight) / 2;
+          context.drawImage(illustration, imageX, imageY, drawWidth, drawHeight);
+          imageBoxWidth = box;
+        }
+        textMaxWidth = width - 2 * paddingX - (imageBoxWidth ? imageBoxWidth + imageGap : 0);
+        textCenterX = imageBoxWidth ? paddingX + imageBoxWidth + imageGap + textMaxWidth / 2 : width / 2;
+      }
+
+      let lines = [state.name];
+      let fontSize = fontSizeMax;
+      for (; fontSize >= 2; fontSize -= 0.25) {
+        context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+        const singleWidth = context.measureText(state.name).width;
+        if (isTermo && singleWidth <= textMaxWidth && fontSize * lineHeightFactor <= textMaxHeight) {
+          lines = [state.name];
+          break;
+        }
+        const split = bestTwoLineSplit(context, state.name);
+        if (split && split.widest <= textMaxWidth && fontSize * lineHeightFactor * 2 <= textMaxHeight) {
+          lines = split.lines;
+          break;
+        }
+        if (!isTermo && !split && singleWidth <= textMaxWidth && fontSize * lineHeightFactor <= textMaxHeight) break;
+      }
+      fontSize = Math.max(fontSize, 2);
+      context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+      context.textAlign = "center";
+      context.textBaseline = "alphabetic";
+      const lineHeight = fontSize * lineHeightFactor;
+      const totalTextHeight = lines.length * lineHeight;
+      const centerY = isTermo ? height / 2 : (height - textMaxHeight) / 2 + textMaxHeight / 2;
+      const firstBaseline = centerY + totalTextHeight / 2 - fontSize * 0.8;
+
+      // Сначала рисуем полную белую обводку всех строк, затем цветной текст —
+      // в таком же порядке, как в pacer.
+      context.fillStyle = "#ffffff";
+      const strokeSteps = isTermo ? 32 : 36;
+      lines.forEach((line, index) => {
+        const y = firstBaseline - index * lineHeight;
+        for (let step = 0; step < strokeSteps; step += 1) {
+          const angle = (2 * Math.PI * step) / strokeSteps;
+          context.fillText(line, textCenterX + strokeOffset * Math.cos(angle), y + strokeOffset * Math.sin(angle));
+        }
+      });
+      context.fillStyle = state.color;
+      lines.forEach((line, index) => context.fillText(line, textCenterX, firstBaseline - index * lineHeight));
+    }
+
+    function updateSteps(form, type) {
+      form.querySelector(".art-step").textContent = type === "termo" ? "4" : "3";
+      form.querySelector(".background-step").textContent = type === "termo" ? "5" : "4";
+      form.querySelector(".color-step").textContent = type === "termo" ? "6" : "5";
+    }
+
+    function setType(form, type) {
+      form.dataset.type = type;
+      form.querySelectorAll(".type-choice").forEach(button => button.classList.toggle("is-selected", button.dataset.type === type));
+      const isStationery = type === "stationery";
+      form.querySelector(".quantity-field").hidden = isStationery;
+      form.querySelector(".background-field").hidden = false;
+      form.querySelector(".without-image").hidden = false;
+      form.querySelector(".background-field").querySelectorAll(".asset-button").forEach(button => {
+        if (isStationery && button.dataset.id === "1" && !selected(form, ".asset-button--background")) button.classList.add("is-selected");
+      });
+      if (!isStationery) form.querySelectorAll(".asset-button--background").forEach(button => button.classList.remove("is-selected"));
+      if (type === "termo" && !selected(form, ".qty-choice")) form.querySelector('.qty-choice[data-qty="40"]').classList.add("is-selected");
+      renderColors(form, type);
+      updateSteps(form, type);
+      syncPreview(form);
+      updateTotalPrice();
+    }
+
+    function addForm(type = "termo") {
+      const form = document.getElementById("formTemplate").content.firstElementChild.cloneNode(true);
+      renderAssets(form);
+      formsContainer.appendChild(form);
+      setType(form, type);
+      updateSheetLabels();
+      return form;
+    }
+
+    function updateSheetLabels() {
+      formsContainer.querySelectorAll(".order-form").forEach((form, index, forms) => {
+        form.querySelector(".sheet-label").textContent = `Лист наклеек ${index + 1}`;
+        form.querySelector(".remove-form").hidden = forms.length === 1;
+      });
+    }
+
+    function calculatePrice() {
+      let total = 0;
+      let sheets = 0;
+      formsContainer.querySelectorAll(".order-form").forEach(form => {
+        const type = form.dataset.type;
+        if (type === "stationery") {
+          total += PRICES.stationery;
+          sheets += 1;
+        } else if (type === "termo") {
+          const qty = selected(form, ".qty-choice")?.dataset.qty || "40";
+          total += PRICES.termo[qty];
+          sheets += Number(qty) === 20 ? 0.5 : 1;
+        }
+      });
+      const discount = sheets > 10 ? Math.round(total * 0.1) : 0;
+      return { total, sheets, discount, finalTotal: total - discount };
+    }
+
+    function updateTotalPrice() {
+      const { sheets, discount, finalTotal } = calculatePrice();
+      document.getElementById("totalPrice").textContent = `${finalTotal} сом`;
+      document.getElementById("totalInfo").textContent = sheets
+        ? `${sheets} ${sheets === 1 ? "лист" : "листа/листов"}${discount ? ` · скидка 10%: −${discount} сом` : ""}`
+        : "Выберите вид наклеек, чтобы увидеть стоимость.";
+    }
+
+    function openOrder(type) {
+      orderSection.hidden = false;
+      const firstForm = formsContainer.querySelector(".order-form") || addForm(type);
+      setType(firstForm, type);
+      orderSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    document.addEventListener("click", event => {
+      const startButton = event.target.closest("[data-start-type]");
+      if (startButton) return openOrder(startButton.dataset.startType);
+
+      const form = event.target.closest(".order-form");
+      if (!form) return;
+      const type = event.target.closest(".type-choice");
+      const qty = event.target.closest(".qty-choice");
+      const image = event.target.closest(".asset-button--image");
+      const background = event.target.closest(".asset-button--background");
+      const color = event.target.closest(".color-option");
+
+      if (type) setType(form, type.dataset.type);
+      else if (qty) {
+        form.querySelectorAll(".qty-choice").forEach(button => button.classList.toggle("is-selected", button === qty));
+        updateTotalPrice();
+      } else if (image) {
+        form.querySelectorAll(".asset-button--image").forEach(button => button.classList.toggle("is-selected", button === image));
+        syncPreview(form);
+      } else if (background) {
+        form.querySelectorAll(".asset-button--background").forEach(button => button.classList.toggle("is-selected", button === background));
+        syncPreview(form);
+      } else if (color) {
+        form.querySelectorAll(".color-option").forEach(button => button.classList.toggle("is-selected", button === color));
+        syncPreview(form);
+      } else if (event.target.closest(".without-image")) {
+        form.querySelectorAll(".asset-button--image").forEach(button => button.classList.remove("is-selected"));
+        syncPreview(form);
+      } else if (event.target.closest(".without-background")) {
+        form.querySelectorAll(".asset-button--background").forEach(button => button.classList.remove("is-selected"));
+        syncPreview(form);
+      } else if (event.target.closest(".remove-form")) {
+        form.remove();
+        updateSheetLabels();
+        updateTotalPrice();
+      }
+    });
+
+    document.addEventListener("input", event => {
+      if (event.target.matches(".child-name")) syncPreview(event.target.closest(".order-form"));
+    });
+
+    document.getElementById("addForm").addEventListener("click", () => {
+      const form = addForm("termo");
+      form.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    document.getElementById("sendOrder").addEventListener("click", () => {
+      const forms = [...formsContainer.querySelectorAll(".order-form")];
+      const missingName = forms.find(form => !form.querySelector(".child-name").value.trim());
+      if (missingName) {
+        missingName.querySelector(".child-name").focus();
+        alert("Пожалуйста, укажите имя ребёнка для каждого листа.");
+        return;
+      }
+      const lines = forms.map((form, index) => {
+        const type = form.dataset.type;
+        const image = selected(form, ".asset-button--image")?.dataset.id || "без картинки";
+        const background = selected(form, ".asset-button--background")?.dataset.id;
+        const color = selected(form, ".color-option")?.dataset.color;
+        const qty = type === "termo" ? `, Количество: ${selected(form, ".qty-choice")?.dataset.qty || 40} шт` : "";
+        return `${index + 1}) Имя: ${form.querySelector(".child-name").value.trim()}\n   Вид: ${TYPE_LABELS[type]}${qty}\n   Картинка: ${image}${background ? `, Фон: ${background}` : ""}, Цвет: ${color}`;
+      });
+      const { finalTotal, discount } = calculatePrice();
+      const message = `Здравствуйте! Хочу заказать наклейки:\n\n${lines.join("\n\n")}\n\nИтого: ${finalTotal} сом${discount ? ` (скидка ${discount} сом)` : ""}`;
+      window.location.href = `https://wa.me/996500060309?text=${encodeURIComponent(message)}`;
+    });
+  </script>
+</body>
+</html>
