@@ -340,7 +340,7 @@ document.addEventListener("input", function (e) {
 
 // 📲 Отправка заказа
 function sendOrder() {
-  const phone = "996500060309"; // ← замените на ваш номер
+  const phone = "996502332337"; // ← замените на ваш номер
   let message = "Здравствуйте! Хочу заказать наклейки:\n";
   let hasError = false;
 
